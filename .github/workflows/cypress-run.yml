@@ -29,9 +29,11 @@ jobs:
         env:
           SHIPPER_REFERENCE: ${{github.event.inputs.pickupNumber}}
           TOTAL_RATE: ${{ github.event.inputs.totalRate }}
+          ACCOUNT_ID: ${{secrets.DITAT_ACCOUNT}}
+          USERNAME: ${{secrets.USERNAME}}
+          PASSWORD: ${{secrets.PASSWORD}}
           RUN_ID: ${{ github.event.inputs.runId }}
         run: |
-          # aquí pasas params a cypress sin tocar .env
           npx cypress run
 
       - name: Updaload Results
