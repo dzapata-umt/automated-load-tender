@@ -1,4 +1,4 @@
-name: Cypress Run (Triggered)
+name: Processing Load Tendering
 
 on:
   workflow_dispatch:
@@ -12,6 +12,7 @@ on:
 
 jobs:
   cypress:
+    environment: 'PROD'
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
