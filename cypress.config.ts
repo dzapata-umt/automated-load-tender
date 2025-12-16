@@ -14,7 +14,7 @@ export default defineConfig({
     },
     retries: 2,
     experimentalMemoryManagement: true,
-    baseUrl: process.env.BASE_URL,
+    baseUrl: 'https://ng01.ditat.net/',
     setupNodeEvents() {
       // implement node event listeners here
     },
