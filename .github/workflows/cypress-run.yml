@@ -11,7 +11,7 @@ on:
         required: false
 
 jobs:
-  cypress:
+  automated_process:
     environment: 'PROD'
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -22,11 +22,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
+          cache: 'npm'
 
-      - name: Install
-        run: npm ci
-
-      - name: Run Cypress
+      - name: Start Process
         env:
           SHIPPER_REFERENCE: ${{github.event.inputs.pickupNumber}}
           TOTAL_RATE: ${{ github.event.inputs.totalRate }}
@@ -35,33 +33,13 @@ jobs:
           PASSWORD: ${{secrets.PASSWORD}}
           RUN_ID: ${{ github.event.inputs.runId }}
         run: |
-          npx cypress run
+          set -euo pipefail
 
-      - name: Updaload Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with: 
-          name: cypress-results-${{ github.event.inputs.runId }}
-          path: results.json
-    
-      - name: Callback n8n with results
-        if: always()
-        env:
-          CALLBACK_URL: ${{ secrets.N8N_CALLBACK_URL }}
-          CALLBACK_TOKEN: ${{ secrets.N8N_CALLBACK_TOKEN }}
-          SHIPPER_REFERENCE: ${{ github.event.inputs.pickupNumber }}
-          TOTAL_RATE: ${{ github.event.inputs.totalRate }}
-          RUN_ID: ${{ github.event.inputs.runId }}
-          JOB_STATUS: ${{ job.status }}
-        run: |
-          RESULTS=$(cat results.json | jq -c .)
-          curl -sS -X POST "$CALLBACK_URL" \
-            -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $CALLBACK_TOKEN" \
-            -d "{
-              \"runId\": \"$RUN_ID\",
-              \"status\": \"$JOB_STATUS\",
-              \"pickupNumber\": \"$PICKUP_NUMBER\",
-              \"totalRate\": \"$TOTAL_RATE\",
-              \"results\": $RESULTS
-            }"
+          : "${SHIPPER_REFERENCE:?Missing pickupNumber}"
+          : "${TOTAL_RATE:?Missing totalRate}"
+          : "${ACCOUNT_ID:?Missing DITAT_ACCOUNT secret}"
+          : "${USERNAME:?Missing USERNAME secret}"
+          : "${PASSWORD:?Missing PASSWORD secret}"
+          : "${RUN_ID:?Missing runId}"
+
+          ./init.sh

@@ -2,3 +2,5 @@ node_modules
 screenshots
 .vscode
 .env
+dist
+fixtures/*

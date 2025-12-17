@@ -6,7 +6,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "ditat:tender-loads": "npx cypress run"
+    "cy:assign-loads":"cypress run --spec cypress/e2e/load-tendering/assign-loads.cy.ts",
+    "cy:send-emails":"cypress run --spec cypress/e2e/load-tendering/send-rate-cons.cy.ts",
+    "ditat:tender-loads": "npx cypress run",
+    "sc:rate-revalidation": "npx tsc && node ./dist/scripts/trip-rate-revalidation/tripRateRevalidation.js",
+    "sc:find-shipments": "npx tsc && node ./dist/scripts/find-shipments/findShipments.js"
   },
   "keywords": [],
   "author": "",

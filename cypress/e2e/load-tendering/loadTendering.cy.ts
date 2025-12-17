@@ -1,9 +1,19 @@
 import { Selectors } from '../../common/selectors';
 import { cypressEnv } from '../../helpers/cypressEnv';
+import { tripFormatter } from '../../helpers/tripFormatter';
 
 interface ShipmentInfo {
   shipmentNumber: string;
   customerReference: string;
+}
+
+interface ProcessedLoads {
+  pickupNumber: string;
+  shipment: {
+    id: string;
+    trip: string;
+    status: string;
+  };
 }
 
 const config = {
@@ -15,6 +25,7 @@ const endpointBase = 'https://tmsapi01.ditat.net';
 
 describe('Automate Load Tendering process', () => {
   const shipments: ShipmentInfo[] = [];
+  const processedLoads: ProcessedLoads[] = [];
 
   beforeEach(() => {
     cy.visit('/');
@@ -123,10 +134,19 @@ describe('Automate Load Tendering process', () => {
 
         cy.wait('@saveAndClose');
         cy.closeTab(1);
+        processedLoads.push({
+          pickupNumber: config.shipperReference,
+          shipment: {
+            id: s.shipmentNumber,
+            trip: tripFormatter(s.shipmentNumber),
+            status: 'Passed',
+          },
+        });
       });
     } else {
       cy.log('No eligible shipments found');
     }
     cy.closeTab(0);
+    cy.writeFile('report.json', JSON.stringify(processedLoads, null, 2));
   });
 });
