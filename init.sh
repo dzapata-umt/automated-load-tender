@@ -78,7 +78,7 @@ fi
 
 # Run Cypress script
 step "5) Running Cypress Script"
-run "Starting UI interaction" npm run cy:assign-loads & spinner $! 
+run "Starting UI interaction" npm run cy:assign-loads
 
 # Revalidate trip rates
 step "6) Revalidating trip rates"
@@ -86,7 +86,7 @@ run "Revalidating rates" npm run sc:rate-revalidation & spinner $!
 
 if jq -e '. | length == 0' "$FIXTURES_FOLDER/wrong_rate_trips.json" > /dev/null; then
   step "7) All Trips have the right rate. Sending confirmation emails..."
-  run "Sending ..." npm run cy:send-emails & spinner $!
+  run "Sending ..." npm run cy:send-emails
 
 else
   err "At least one trip has a wrong rate. Reassigning affected loads..."
