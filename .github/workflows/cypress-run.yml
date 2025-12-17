@@ -33,13 +33,4 @@ jobs:
           PASSWORD: ${{secrets.PASSWORD}}
           RUN_ID: ${{ github.event.inputs.runId }}
         run: |
-          set -euo pipefail
-
-          : "${SHIPPER_REFERENCE:?Missing pickupNumber}"
-          : "${TOTAL_RATE:?Missing totalRate}"
-          : "${ACCOUNT_ID:?Missing DITAT_ACCOUNT secret}"
-          : "${USERNAME:?Missing USERNAME secret}"
-          : "${PASSWORD:?Missing PASSWORD secret}"
-          : "${RUN_ID:?Missing runId}"
-
           ./init.sh
