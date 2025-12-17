@@ -5,6 +5,7 @@ import { cypressEnv } from '../../helpers/cypressEnv';
 const config = {
   shipperReference: cypressEnv('shipperReference'),
   totalRate: cypressEnv('totalRate'),
+  carrier: cypressEnv('carrier'),
 };
 
 describe('Trip Assignment Process', () => {
@@ -45,7 +46,7 @@ describe('Trip Assignment Process', () => {
       // <-- Find Single Shipment -->
       cy.viewTrip();
       cy.get(Selectors.CARRIER_INPUT)
-        .type('Intermodal')
+        .type(config.carrier)
         .press(Cypress.Keyboard.Keys.TAB);
       cy.get('button').contains('Finish').click();
       cy.get('button').contains('Add Pay').click();

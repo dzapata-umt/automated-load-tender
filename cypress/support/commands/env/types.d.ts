@@ -4,4 +4,5 @@ export interface CypressEnv {
   ditatAccount: string;
   ditatUsername: string;
   ditatPassword: string;
+  carrier: string;
 }

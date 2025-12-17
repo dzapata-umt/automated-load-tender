@@ -68,7 +68,7 @@ success "Dependencies installed"
 # Find eligible loads
 step "4) Finding eligible shipments"
 
-run "Attempting to find pending shipments" npm run sc:find-shipments & spinner $!
+run "Attempting to find pending shipments" npm run sc:find-shipments
 if jq -e '. | length == 0' "$FIXTURES_FOLDER/eligible_shipments.json" > /dev/null; then
   info "No eligible shipments found. Exiting process"
   exit 0
@@ -82,7 +82,7 @@ run "Starting UI interaction" npm run cy:assign-loads
 
 # Revalidate trip rates
 step "6) Revalidating trip rates"
-run "Revalidating rates" npm run sc:rate-revalidation & spinner $!
+run "Revalidating rates" npm run sc:rate-revalidation
 
 if jq -e '. | length == 0' "$FIXTURES_FOLDER/wrong_rate_trips.json" > /dev/null; then
   step "7) All Trips have the right rate. Sending confirmation emails..."

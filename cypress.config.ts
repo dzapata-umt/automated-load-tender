@@ -11,6 +11,7 @@ export default defineConfig({
       ditatAccount: process.env.ACCOUNT_ID,
       ditatUsername: process.env.USERNAME,
       ditatPassword: process.env.PASSWORD,
+      carrier: process.env.CARRIER,
     },
     retries: 2,
     experimentalMemoryManagement: true,

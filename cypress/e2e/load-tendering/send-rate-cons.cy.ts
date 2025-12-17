@@ -1,6 +1,6 @@
 import eligibleShipments from '../../../fixtures/eligible_shipments.json';
 
-describe('first', () => {
+describe('Send Rate Confirmation', () => {
   const endpointBase = 'https://tmsapi01.ditat.net';
   beforeEach(() => {
     cy.visit('/');
