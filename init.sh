@@ -36,9 +36,6 @@ spinner() {
   printf "\r"
 }
 
-# Config
-
-clear
 # Verify Existence of fixtures folder
 step "1) Verifying existence of the 'fixtures' folder"
 FIXTURES_FOLDER="./fixtures"
@@ -65,7 +62,7 @@ success "Fixture files created successfully."
 
 # Install dependencies
 step "3) Installing node dependencies"
-run "Please wait ..." npm ci
+run "Please wait ..." npm ci --no-audit --no-fund
 success "Dependencies installed"
 
 # Find eligible loads
