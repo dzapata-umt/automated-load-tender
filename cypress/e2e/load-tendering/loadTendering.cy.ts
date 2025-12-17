@@ -21,6 +21,11 @@ const config = {
   totalRate: cypressEnv('totalRate'),
 };
 
+const loadFilter =
+  cypressEnv('ditatAccount') === 'demo4'
+    ? 'Shipper reference'
+    : 'Pickup Number';
+
 const endpointBase = 'https://tmsapi01.ditat.net';
 
 describe('Automate Load Tendering process', () => {
@@ -41,7 +46,7 @@ describe('Automate Load Tendering process', () => {
     cy.openSearchModule();
     cy.wait(500);
     cy.clearSearchFilter();
-    cy.setFilter(0, 'Shipper reference', config.shipperReference, false);
+    cy.setFilter(0, loadFilter, config.shipperReference, false);
     cy.get('button').contains('Add').click();
     cy.get('select').eq(1).select('Shipment Status', { force: true });
     cy.get('select').eq(2).select('Pending');
