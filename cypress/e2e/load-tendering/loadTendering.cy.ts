@@ -1,6 +1,6 @@
 import { Selectors } from '../../common/selectors';
 import { cypressEnv } from '../../helpers/cypressEnv';
-import { tripFormatter } from '../../helpers/tripFormatter';
+import { tripFormatter } from '../../../src/helpers/tripFormatter';
 
 interface ShipmentInfo {
   shipmentNumber: string;

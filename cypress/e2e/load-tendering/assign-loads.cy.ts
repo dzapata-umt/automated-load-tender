@@ -1,6 +1,7 @@
 import eligibleShipments from '../../../fixtures/eligible_shipments.json';
 import { Selectors } from '../../common/selectors';
 import { cypressEnv } from '../../helpers/cypressEnv';
+import path from 'path';
 
 const config = {
   shipperReference: cypressEnv('shipperReference'),
@@ -10,6 +11,7 @@ const config = {
 
 describe('Trip Assignment Process', () => {
   const endpointBase = 'https://tmsapi01.ditat.net';
+  const affectedLoadsList = [];
 
   beforeEach(() => {
     cy.visit('/');
@@ -49,31 +51,48 @@ describe('Trip Assignment Process', () => {
         .type(config.carrier)
         .press(Cypress.Keyboard.Keys.TAB);
       cy.get('button').contains('Finish').click();
-      cy.get('button').contains('Add Pay').click();
-      cy.wait(500);
-      cy.get('dx-data-grid')
-        .eq(1)
-        .find('input')
-        .eq(0)
-        .type('FLAT')
-        .press(Cypress.Keyboard.Keys.TAB);
-      cy.get('input[inputmode="decimal"]').eq(2).type(config.totalRate);
-      cy.wait(200);
-      cy.get('input[inputmode="decimal"]').press(Cypress.Keyboard.Keys.TAB);
 
-      cy.get('ditat-ext-data-entry-toolbar button').eq(1).click();
+      const addRate = () => {
+        cy.get('button').contains('Add Pay').click();
+        cy.wait(500);
+        cy.get('dx-data-grid')
+          .eq(1)
+          .find('input')
+          .eq(0)
+          .type('FLAT')
+          .press(Cypress.Keyboard.Keys.TAB);
+        cy.get('input[inputmode="decimal"]').eq(2).type(config.totalRate);
+        cy.wait(200);
+        cy.get('input[inputmode="decimal"]').press(Cypress.Keyboard.Keys.TAB);
+      };
+      // cy.get('ditat-ext-data-entry-toolbar button').eq(1).click();
 
-      cy.intercept({
-        url: `${endpointBase}/api/tms/common/lock*`,
-        method: 'DELETE',
-      }).as('saveAndClose');
+      const input = cy.get('dx-data-grid .dx-texteditor-input').eq(1);
+      addRate();
+
+      input.then(($f) => {
+        if ($f.val() !== cypressEnv('totalRate')) {
+          input.type('{selectall}').type(cypressEnv('totalRate'));
+          input.press(Cypress.Keyboard.Keys.TAB);
+        }
+      });
 
       cy.saveAndClose();
 
-      cy.wait('@saveAndClose');
+      affectedLoadsList.push({
+        shipmentId: s.shipmentId,
+      });
+
       cy.closeTab(1);
 
       cy.closeTab(0);
     });
+  });
+
+  afterEach(() => {
+    cy.writeFile(
+      path.join(__dirname, '../../../fixtures/affected_loads.json'),
+      JSON.stringify(affectedLoadsList, null, 2)
+    );
   });
 });

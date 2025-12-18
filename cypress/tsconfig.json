@@ -6,6 +6,6 @@
     "resolveJsonModule": true,
     "esModuleInterop": true
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "../src/helpers/tripFormatter.ts"],
   "exclude": ["cypress.config.ts", "cypress", "node_modules"]
 }

@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { tripFormatter } from '../../helpers/tripFormatter';
+
 import fs from 'fs';
 import path from 'path';
 import affectedLoads from '../../../fixtures/affected_loads.json';
@@ -52,15 +54,19 @@ export class LoadTenderingService {
   }
 
   async checkTripRates(rate: number): Promise<void> {
-    const wrongLoads: never[] = [];
+    const wrongLoads: { shipmentId: string }[] = [];
     const workdir = path.join(
       __dirname,
       '../../../fixtures/wrong_rate_trips.json'
     );
 
     for (const load of affectedLoads) {
-      const ditatLoad = await this.fetchTrip((load as any).tripId);
+      const ditatLoad = await this.fetchTrip(
+        tripFormatter((load as any).shipmentId)
+      );
       const [tripInfo] = ditatLoad.data;
+
+      console.log(tripInfo?.totalPayAmount, rate);
 
       if (tripInfo?.totalPayAmount !== rate) {
         wrongLoads.push(load);
