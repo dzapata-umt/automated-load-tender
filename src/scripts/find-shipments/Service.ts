@@ -5,6 +5,7 @@ import fs from 'fs';
 
 import { DitatService } from './../../services/DitatService';
 import { TripSearchResponse } from '../../types/TripSearchResponse';
+import { temploads } from './temploads';
 
 export class FindShipmentsService {
   private service: DitatService = new DitatService({
@@ -19,6 +20,40 @@ export class FindShipmentsService {
 
   async logout(): Promise<void> {
     await this.service.logout();
+  }
+
+  async findIndividualLoads() {
+    const loads = [];
+
+    for (const l of temploads) {
+      const endpoint = '/api/tms/search/trips-shipments';
+      const shipment = await fetch(`${this.service.utils.baseUrl}${endpoint}`, {
+        method: 'POST',
+        headers: {
+          ...this.service.utils.headers,
+        },
+        body: JSON.stringify({
+          FilterItems: [
+            {
+              columnName: 'shipmentId',
+              filterType: 5,
+              filterFromValue: l,
+            },
+          ],
+        }),
+      });
+
+      const shipments: TripSearchResponse = await shipment.json();
+
+      loads.push({
+        shipmentId: shipments.data[0]?.shipmentId,
+        customerReference: shipments.data[0]?.referenceId1,
+      });
+    }
+    fs.writeFileSync(
+      path.join(__dirname, '../../../fixtures/eligible_shipments.json'),
+      JSON.stringify(loads, null, 2)
+    );
   }
 
   private async findLoadsByPickupNumber(): Promise<TripSearchResponse> {
@@ -55,7 +90,7 @@ export class FindShipmentsService {
       '../../../fixtures/eligible_shipments.json'
     );
     const eligibleLoads = data
-      .filter((load) => !load.tripId)
+      .filter((load) => load.shipmentStatus === 1)
       .map((s) => ({
         shipmentId: s.shipmentId,
         customerReference: s.referenceId1,

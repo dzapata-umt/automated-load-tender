@@ -3,7 +3,7 @@ import { tripFormatter } from '../../helpers/tripFormatter';
 
 import fs from 'fs';
 import path from 'path';
-import affectedLoads from '../../../fixtures/affected_loads.json';
+import eligibleShipments from '../../../fixtures/eligible_shipments.json';
 
 import type { FilteredShipments } from './types';
 
@@ -60,7 +60,7 @@ export class LoadTenderingService {
       '../../../fixtures/wrong_rate_trips.json'
     );
 
-    for (const load of affectedLoads) {
+    for (const load of eligibleShipments) {
       const ditatLoad = await this.fetchTrip(
         tripFormatter((load as any).shipmentId)
       );

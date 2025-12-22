@@ -9,7 +9,7 @@ const config = {
   carrier: cypressEnv('carrier'),
 };
 
-describe('Trip Assignment Process', () => {
+describe(`Trip Assignment Process for batch ${config.shipperReference}`, () => {
   const endpointBase = 'https://tmsapi01.ditat.net';
   const affectedLoadsList = [];
 
