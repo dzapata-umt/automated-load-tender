@@ -4,7 +4,7 @@ import affectedLoads from '../../../fixtures/affected_loads.json';
 
 (async () => {
   const URL =
-    'https://umt-orchestrator.server.umtbots.cloud/webhook-test/send-report-email';
+    'https://umt-orchestrator.server.umtbots.cloud/webhook/send-report-email';
   const token = process.env.N8N_TOKEN!;
 
   try {
