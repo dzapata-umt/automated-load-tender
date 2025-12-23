@@ -34,6 +34,7 @@ jobs:
           ACCOUNT_ID: ${{secrets.DITAT_ACCOUNT}}
           USERNAME: ${{secrets.USERNAME}}
           PASSWORD: ${{secrets.PASSWORD}}
+          N8N_TOKEN: ${{secrets.N8N_TOKEN}}
           RUN_ID: ${{ github.event.inputs.runId }}
         run: |
           ./init.sh

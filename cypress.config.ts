@@ -13,7 +13,7 @@ export default defineConfig({
       ditatPassword: process.env.PASSWORD,
       carrier: process.env.CARRIER,
     },
-    retries: 2,
+    retries: 3,
     experimentalMemoryManagement: true,
     baseUrl: 'https://ng01.ditat.net/',
     setupNodeEvents() {

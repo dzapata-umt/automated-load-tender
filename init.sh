@@ -52,7 +52,7 @@ fi
 step "2) Creating fixture files"
 
 touch "$FIXTURES_FOLDER/affected_loads.json" 
-echo "[]" > "$FIXTURES_FOLDER/affected_loads.json"
+echo "{}" > "$FIXTURES_FOLDER/affected_loads.json"
 touch "$FIXTURES_FOLDER/eligible_shipments.json" 
 echo "[]" > "$FIXTURES_FOLDER/eligible_shipments.json"
 touch "$FIXTURES_FOLDER/wrong_rate_trips.json" 
@@ -81,12 +81,12 @@ step "5) Running Cypress Script"
 run "Starting UI interaction" npm run cy:assign-loads
 
 if jq -e '. | length == 0' "$FIXTURES_FOLDER/wrong_rate_trips.json" > /dev/null; then
-  step "7) All Trips have the right rate. Sending confirmation emails..."
+  step "6) All Trips have the right rate. Sending confirmation emails..."
   run "Sending ..." npm run cy:send-emails
 else
   err "At least one trip has a wrong rate. Reassigning affected loads..."
 fi 
 
-# Send Rate Confirmation Emails
-#step "7) Send Rate Confirmation Emails"
-#run "Sending ..." npm run cy:send-emails
+# Send Report Email
+step "7) Send Report Email"
+run "Sending Report Email" npm run sc:send-report-email

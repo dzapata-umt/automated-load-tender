@@ -10,7 +10,8 @@
     "cy:send-emails":"cypress run --spec cypress/e2e/load-tendering/send-rate-cons.cy.ts",
     "ditat:tender-loads": "npx cypress run",
     "sc:rate-revalidation": "npx tsc && node ./dist/scripts/trip-rate-revalidation/tripRateRevalidation.js",
-    "sc:find-shipments": "npx tsc && node ./dist/scripts/find-shipments/findShipments.js"
+    "sc:find-shipments": "npx tsc && node ./dist/scripts/find-shipments/findShipments.js",
+    "sc:send-report-email": "npx tsc && node ./dist/scripts/send-report/sendReport.js"
   },
   "keywords": [],
   "author": "",

@@ -1,7 +1,17 @@
 import eligibleShipments from '../../../fixtures/eligible_shipments.json';
+import { cypressEnv } from '../../helpers/cypressEnv';
+import path from 'path';
+interface Loads {
+  pickupNumber: string;
+  loads: string[];
+}
 
 describe('Send Rate Confirmation', () => {
   const endpointBase = 'https://tmsapi01.ditat.net';
+  const affectedLoads: Loads = {
+    pickupNumber: cypressEnv('shipperReference'),
+    loads: [],
+  };
   beforeEach(() => {
     cy.visit('/');
     cy.login();
@@ -49,14 +59,27 @@ describe('Send Rate Confirmation', () => {
             cy.wrap($subject).type(subject);
           });
       });
+      cy.intercept({
+        url: `${endpointBase}/api/tms/mail/email*`,
+        method: 'POST',
+      }).as('emailRequest');
 
       cy.get('.modal-body button').eq(0).click(); // Sends email
+      cy.wait('@emailRequest');
       cy.closeTab(2);
 
       cy.saveAndClose();
 
       cy.closeTab(1);
       cy.closeTab(0);
+      if (!affectedLoads.loads.includes(load.shipmentId)) {
+        affectedLoads.loads.push(load.shipmentId);
+      }
+
+      cy.writeFile(
+        path.join(__dirname, '../../../fixtures/affected_loads.json'),
+        JSON.stringify(affectedLoads, null, 2)
+      );
     });
   });
 });
