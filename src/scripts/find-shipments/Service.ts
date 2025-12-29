@@ -36,7 +36,7 @@ export class FindShipmentsService {
           FilterItems: [
             {
               columnName: 'shipmentId',
-              filterType: 5,
+              filterType: 1,
               filterFromValue: l,
             },
           ],
@@ -71,7 +71,7 @@ export class FindShipmentsService {
         FilterItems: [
           {
             columnName: 'referenceId3',
-            filterType: 5,
+            filterType: 1,
             filterFromValue: pickupNumber,
           },
         ],

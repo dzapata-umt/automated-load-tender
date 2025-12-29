@@ -1,3 +1,4 @@
+// npm run sc:find-shipments
 import 'dotenv/config';
 
 import { FindShipmentsService } from './Service';

@@ -33,7 +33,7 @@ export class LoadTenderingService {
         FilterItems: [
           {
             columnName: 'tripId',
-            filterType: 5,
+            filterType: 1,
             filterFromValue: id,
           },
         ],
