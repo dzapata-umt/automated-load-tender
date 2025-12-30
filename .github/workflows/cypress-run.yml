@@ -1,4 +1,6 @@
-name: Tendering - ${{github.event.inputs.pickupNumber}}
+name: Mass Load Tendering
+
+run-name: Tendering - ${{github.event.inputs.pickupNumber}}
 
 on:
   workflow_dispatch:
