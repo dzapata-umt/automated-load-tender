@@ -17,6 +17,10 @@ describe('Send Rate Confirmation', () => {
     cy.login();
   });
 
+  it('60 seconds wait time', () => {
+    cy.wait(60000);
+  });
+
   eligibleShipments.forEach((load) => {
     it(`Sending Rate Confirmation for ${load.shipmentId}`, () => {
       cy.openSearchModule();

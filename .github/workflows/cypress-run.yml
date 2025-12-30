@@ -1,4 +1,4 @@
-name: Processing Load Tendering
+name: Tendering - ${{github.event.inputs.pickupNumber}}
 
 on:
   workflow_dispatch:
