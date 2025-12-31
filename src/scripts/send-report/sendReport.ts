@@ -62,7 +62,7 @@ const saveAffectedLoads = async (data: unknown) => {
       const affectedLoads = await loadAffectedLoads();
 
       const URL =
-        'https://umt-orchestrator.server.umtbots.cloud/webhook-test/send-report-email';
+        'https://umt-orchestrator.server.umtbots.cloud/webhook/send-report-email';
       const token = process.env.N8N_TOKEN!;
 
       const request = await fetch(URL, {
