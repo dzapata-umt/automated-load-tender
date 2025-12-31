@@ -3,13 +3,20 @@ import { cypressEnv } from '../../helpers/cypressEnv';
 import path from 'path';
 interface Loads {
   pickupNumber: string;
-  loads: string[];
+  customerReference: string;
+  loads: LoadComposition[];
+}
+
+interface LoadComposition {
+  shipment: string;
+  customerReference: string;
 }
 
 describe('Send Rate Confirmation', () => {
   const endpointBase = 'https://tmsapi01.ditat.net';
   const affectedLoads: Loads = {
     pickupNumber: cypressEnv('shipperReference'),
+    customerReference: '',
     loads: [],
   };
   beforeEach(() => {
@@ -76,8 +83,16 @@ describe('Send Rate Confirmation', () => {
 
       cy.closeTab(1);
       cy.closeTab(0);
-      if (!affectedLoads.loads.includes(load.shipmentId)) {
-        affectedLoads.loads.push(load.shipmentId);
+
+      const exists = affectedLoads.loads.some(
+        (l) => l.shipment === load.shipmentId
+      );
+
+      if (!exists) {
+        affectedLoads.loads.push({
+          shipment: load.shipmentId,
+          customerReference: load.customerReference,
+        });
       }
 
       cy.writeFile(

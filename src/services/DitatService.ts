@@ -7,7 +7,7 @@ export interface DitatClientOptions {
 }
 
 export class DitatService {
-  private baseUrl = 'https://api01.ditat.net';
+  private baseUrl = 'https://tmsapi01.ditat.net';
   private applicationRole = 'Login to TMS';
   private accountId: string;
   private username: string;
@@ -60,7 +60,7 @@ export class DitatService {
   async logout() {
     if (!this.token) return;
 
-    const url = `${this.baseUrl}/api/tms/auth/login`;
+    const url = `${this.baseUrl}/api/tms/auth/logout`;
 
     await fetch(url, {
       method: 'POST',
