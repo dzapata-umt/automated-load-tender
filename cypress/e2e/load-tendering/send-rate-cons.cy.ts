@@ -62,14 +62,18 @@ describe('Send Rate Confirmation', () => {
           inputIndex = 1;
         }
 
+        // Adds customer reference to the subject if not existing
         cy.get('.modal-body input')
           .eq(inputIndex)
           .then(($subject) => {
-            const subject = `${$subject.val() as string} ${load.customerReference}`;
-            cy.wrap($subject).type('{selectall}');
-            cy.wrap($subject).type(subject);
+            if (!$subject.val().toString().includes(load.customerReference)) {
+              const subject = `${$subject.val() as string} ${load.customerReference}`;
+              cy.wrap($subject).type('{selectall}');
+              cy.wrap($subject).type(subject);
+            }
           });
       });
+
       cy.intercept({
         url: `${endpointBase}/api/tms/mail/email*`,
         method: 'POST',
